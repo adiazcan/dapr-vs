@@ -1,0 +1,18 @@
+name: microtest
+extensions:
+- name: dapr
+  enable-profiling: true
+  components-path: "./dapr/components/"
+
+services:
+- name: microtest-blue-api
+  project: ./MicroTest.Blue.Api/MicroTest.Blue.Api.csproj
+  bindings:
+    - protocol: http
+      port: 6001
+
+- name: microtest-red-api
+  project: ./MicroTest.Red.Api/MicroTest.Red.Api.csproj
+  bindings:
+    - protocol: http
+      port: 6002
