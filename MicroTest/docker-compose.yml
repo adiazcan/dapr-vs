@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  redis:
+    image: redis:alpine
+
+  microtest-blue-api:
+    image: ${DOCKER_REGISTRY-}microtestblueapi
+    build:
+      context: .
+      dockerfile: MicroTest.Blue.Api/Dockerfile
+    ports: 
+        - "51000:50001"
+
+  microtest-blue-api-dapr:
+    image: "daprio/daprd:1.9.0"
+    network_mode: "service:microtest-blue-api"
+    command: ["./daprd",
+      "--app-id", "microtest-blue-api",
+      "--app-port", "80",
+      "--components-path", "/components",
+      "--log-level", "debug"
+      ]
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - microtest-blue-api
+
+  microtest-red-api:
+    image: ${DOCKER_REGISTRY-}microtestredapi
+    build:
+      context: .
+      dockerfile: MicroTest.Red.Api/Dockerfile
+
+  microtest-red-api-dapr:
+    image: "daprio/daprd:1.9.0"
+    network_mode: "service:microtest-red-api"
+    command: ["./daprd",
+      "--app-id", "microtest-red-api",
+      "--app-port", "80",
+      "--dapr-http-port", "3501",
+      "--components-path", "/components",
+      "--log-level", "debug"
+      ]
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - microtest-red-api

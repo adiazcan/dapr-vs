@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "microtest-blue-api": "StartDebugging",
+        "microtest-red-api": "StartDebugging",
+        "microtest-blue-api-dapr": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging"
+      }
+    },
+    "Blue": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "microtest-blue-api": "StartDebugging",
+        "microtest-blue-api-dapr": "StartWithoutDebugging",
+        "microtest-red-api": "StartDebugging",
+        "microtest-red-api-dapr": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging"
+      }
+    }
+  }
+}
